@@ -1,6 +1,9 @@
 package presentation;
 
 import javax.swing.SwingUtilities;
+
+import domain.ATM;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -16,7 +19,12 @@ public class TransferFrame extends JFrame {
     private JButton transferButton;
     private JLabel statusLabel;
 
-    public TransferFrame() {
+    private ATM atm;
+    private ATMFrame atmFrame;
+
+    public TransferFrame(ATM atm, ATMFrame atmFrame) {
+        this.atm = atm; // 전달받은 ATM 객체를 필드에 저장
+        this.atmFrame = atmFrame; // ATMFrame 객체 저장
         setTitle("Transfer Money");
         setSize(400, 300);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -72,22 +80,20 @@ public class TransferFrame extends JFrame {
         });
     }
 
-    private void performTransfer() {
-        String fromAccount = fromAccountField.getText();
-        String toAccount = toAccountField.getText();
-        String amountText = amountField.getText();
+        private void performTransfer() {
+        try {
+            String fromAccount = fromAccountField.getText();
+            String toAccount = toAccountField.getText();
+            double amount = Double.parseDouble(amountField.getText());
 
-        // Perform validation and transfer logic here
-        // For now, we just display a success message
-        statusLabel.setText("Transfer successful from " + fromAccount + " to " + toAccount + " of amount " + amountText);
-    }
+            // ATM 객체를 통해 이체 수행
+            String result = atm.performTransfer(fromAccount, toAccount, amount);
+            atmFrame.displayTransferResult(result);
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new TransferFrame().setVisible(true);
-            }
-        });
+        } catch (NumberFormatException e) {
+            statusLabel.setText("Invalid amount format.");
+        } catch (Exception e) {
+            statusLabel.setText("Error: " + e.getMessage());
+        }
     }
 }

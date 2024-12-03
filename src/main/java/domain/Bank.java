@@ -24,6 +24,10 @@ public class Bank {
         return null;
     }
 
+    public List<Customer> getCustomers() {
+        return customers;
+    }
+
     @Override
     public String toString() {
         return "Bank: " + name + ", Customers: " + customers.size();

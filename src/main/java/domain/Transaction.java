@@ -8,6 +8,10 @@ public class Transaction {
         this.amount = amount;
     }
 
+    public double getAmount() {
+        return amount;
+    }
+
     @Override
     public String toString() {
         return "Transaction: " + transactionType + ", Amount: " + amount;

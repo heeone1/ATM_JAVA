@@ -13,11 +13,15 @@ public class Main {
 
         // Create a customer
         Customer customer = new Customer("Alice", 30, "1111");
+        Customer customer2 = new Customer("Hee", 25, "2222");
         bank.addCustomer(customer);
+        bank.addCustomer(customer2);
 
         // Create an account for the customer
         Account account = new Account("11111111");
+        Account account2 = new Account("22222222");
         customer.addAccount(account);
+        customer2.addAccount(account2);
 
         // Create the ATM logic
         ATM atm = new ATM(bank);

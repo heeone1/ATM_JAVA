@@ -65,4 +65,56 @@ public class ATM {
 
         return "Current Balance: $" + currentAccount.getBalance();
     }
+
+
+    public String performTransfer(String fromAccountNumber, String toAccountNumber, double amount) {
+        
+        if (currentCustomer == null) {
+            return "Please login first.";
+        }
+    
+        Account fromAccount = null;
+        Account toAccount = null;
+        Customer sender = null;
+        Customer receiver = null;
+
+
+        // 로그인한 사용자의 계좌에서 송신 계좌 확인
+        for (Account account : currentCustomer.getAccounts()) {
+            if (account.toString().contains(fromAccountNumber)) {
+                fromAccount = account;
+                break;
+            }
+        }
+
+        if (fromAccount == null) {
+            return "You do not own the sender account."; // 본인의 계좌가 아닌 경우
+        }
+
+        // 수신 계좌 찾기
+        for (Customer customer : bank.getCustomers()) {
+            for (Account account : customer.getAccounts()) {
+                if (account.toString().contains(toAccountNumber)) {
+                    toAccount = account;
+                    receiver = customer;
+                    break;
+                }
+            }
+        }
+
+        if (toAccount == null) {
+            return "Receiver account not found.";
+        }
+        
+        try {
+            fromAccount.transfer(amount, toAccount);
+            return "Transfer successful\n" +
+               "Sender: " + currentCustomer.getName() + " (Account: " + fromAccountNumber + ")\n" +
+               "Receiver: " + receiver.getName() + " (Account: " + toAccountNumber + ")\n" +
+               "Amount: $" + amount;
+        } catch (IllegalArgumentException ex) {
+            return ex.getMessage();
+        }
+    }
+    
 }

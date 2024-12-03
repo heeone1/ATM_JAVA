@@ -26,7 +26,7 @@ public class ATMFrame extends JFrame {
         this.atm = atm;
 
         setTitle("ATM Machine");
-        setSize(400, 400);
+        setSize(400, 430);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null); // null: 화면 중앙에 표시하도록 함 
 
@@ -81,16 +81,23 @@ public class ATMFrame extends JFrame {
         panel.add(depositButton);
 
         JButton withdrawButton = new JButton("Withdraw");
-        withdrawButton.setBounds(120, 170, 100, 25);
+        withdrawButton.setBounds(130, 170, 100, 25);
         panel.add(withdrawButton);
 
         JButton balanceButton = new JButton("Check Balance");
-        balanceButton.setBounds(230, 170, 150, 25);
+        balanceButton.setBounds(10, 200, 150, 25);
         panel.add(balanceButton);
+
+
+        // Transfer Button
+        JButton transferButton = new JButton("Transfer");
+        transferButton.setBounds(250, 170, 100, 25);
+        panel.add(transferButton);
+
 
         // output area
         outputArea = new JTextArea();
-        outputArea.setBounds(10, 200, 370, 150);
+        outputArea.setBounds(10, 235, 370, 150);
         outputArea.setEditable(false);
         panel.add(outputArea);
 
@@ -122,6 +129,13 @@ public class ATMFrame extends JFrame {
                 checkBalance();
             }
         });
+
+        transferButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                openTransferFrame();
+            }
+        });
     }
 
     private void login() {
@@ -147,6 +161,15 @@ public class ATMFrame extends JFrame {
         String accountNumber = accountField.getText();
 
         String result = atm.checkBalance(accountNumber);
+        outputArea.setText(result);
+    }
+
+    private void openTransferFrame() {
+        TransferFrame transferFrame = new TransferFrame(atm, this);
+        transferFrame.setVisible(true);
+    }
+    
+    public void displayTransferResult(String result) {
         outputArea.setText(result);
     }
 }
